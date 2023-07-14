@@ -1,6 +1,7 @@
 pipeline {
   agent any
   environment {
+    DOCKERHUB = credentials("dockerhub")
     GITHUB_REPO="https://github.com/seonggg/hello_world_server"
     DOCKER_REPO="rselove06/hello_world_server"
     VERSION=1.0
@@ -29,7 +30,9 @@ pipeline {
     }
     stage("Docker Push") {
       steps {
+        sh "docker login -u $DOCKERHUB_USR -p $DOCKERHUB_PSW"
         sh "echo 'Docker Push'"
+        sh "docker logout"
       }
     }
     stage("Deploy") {
